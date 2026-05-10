@@ -9,7 +9,6 @@
       --navy: #0F172A;
       --red: #C8102E;
       --bg: #F1F5F9;
-      --white: #FFFFFF;
       --border: #E2E8F0;
       --muted: #64748B;
       --free-bg: #F0FDF4;
@@ -28,7 +27,7 @@
     /* ── Header ── */
     header {
       background: var(--navy);
-      padding: 1rem 1.5rem;
+      padding: .9rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -37,6 +36,7 @@
       position: sticky;
       top: 0;
       z-index: 50;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
     }
 
     .header-brand {
@@ -46,44 +46,43 @@
     }
 
     .header-icon {
-      width: 36px; height: 36px;
+      width: 34px; height: 34px;
       background: var(--red);
       border-radius: 9px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     .header-title {
-      font-size: 1rem;
+      font-size: .95rem;
       font-weight: 800;
       color: white;
-      letter-spacing: .01em;
       line-height: 1.2;
     }
 
     .header-sub {
-      font-size: .72rem;
-      color: rgba(255,255,255,.45);
-      font-weight: 400;
+      font-size: .68rem;
+      color: rgba(255,255,255,.4);
       letter-spacing: .06em;
       text-transform: uppercase;
     }
 
     .view-toggle {
       display: flex;
-      gap: .4rem;
+      gap: .35rem;
     }
 
     .view-btn {
-      padding: .4rem .9rem;
+      padding: .38rem .85rem;
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,.18);
       background: transparent;
       color: rgba(255,255,255,.6);
-      font-size: .78rem;
+      font-size: .76rem;
       font-weight: 600;
       cursor: pointer;
       transition: all .15s;
+      white-space: nowrap;
     }
 
     .view-btn.active {
@@ -92,73 +91,31 @@
       border-color: white;
     }
 
-    /* ── Month Tabs ── */
-    .month-nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      padding: 0 1rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .month-nav::-webkit-scrollbar { display: none; }
-
-    .month-tab {
-      padding: .85rem 1.1rem;
-      font-size: .82rem;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      border: none;
-      border-bottom: 2px solid transparent;
-      background: none;
-      white-space: nowrap;
-      transition: all .15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .2rem;
-    }
-
-    .month-tab.active {
-      color: var(--navy);
-      border-bottom-color: var(--red);
-    }
-
-    .month-tab-count {
-      font-size: .62rem;
-      font-weight: 700;
-      color: var(--red);
-      opacity: 0;
-      transition: opacity .15s;
-    }
-
-    .month-tab.has-events .month-tab-count { opacity: 1; }
-
-    /* ── Calendar ── */
-    .calendar-wrap {
-      max-width: 1140px;
+    /* ── Shared layout ── */
+    .view-wrap {
+      max-width: 1160px;
       margin: 1.5rem auto;
       padding: 0 1rem;
     }
 
-    .cal-month-label {
-      font-size: 1.4rem;
+    /* ── Shared month header inside a cal block ── */
+    .month-heading {
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--navy);
-      margin-bottom: 1rem;
+      margin-bottom: .85rem;
       display: flex;
       align-items: baseline;
-      gap: .5rem;
+      gap: .45rem;
     }
 
-    .cal-month-label span {
-      font-size: .8rem;
+    .month-heading span {
+      font-size: .75rem;
       font-weight: 500;
       color: var(--muted);
     }
 
+    /* ── Calendar grid (full size) ── */
     .cal-grid {
       background: white;
       border-radius: 16px;
@@ -176,7 +133,7 @@
     .cal-dow {
       padding: .6rem 0;
       text-align: center;
-      font-size: .68rem;
+      font-size: .66rem;
       font-weight: 700;
       letter-spacing: .1em;
       text-transform: uppercase;
@@ -191,30 +148,21 @@
     }
 
     .cal-day {
-      min-height: 115px;
+      min-height: 110px;
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: .5rem .4rem .4rem;
+      padding: .45rem .38rem .38rem;
       cursor: pointer;
       transition: background .1s;
       position: relative;
     }
 
     .cal-day:nth-child(7n) { border-right: none; }
-
     .cal-day:hover:not(.other-month) { background: #F8FAFC; }
-
-    .cal-day.other-month {
-      background: #FAFAFA;
-      cursor: default;
-    }
-
+    .cal-day.other-month { background: #FAFAFA; cursor: default; }
     .cal-day.other-month .day-num { color: #CBD5E1; }
 
-    .cal-day.free-weekend {
-      background: var(--free-bg);
-    }
-
+    .cal-day.free-weekend { background: var(--free-bg); }
     .cal-day.free-weekend:hover { background: #DCFCE7; }
 
     .cal-day.is-today .day-num {
@@ -224,51 +172,155 @@
     }
 
     .day-num {
-      width: 26px;
-      height: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
       font-size: .78rem;
       font-weight: 700;
       color: var(--navy);
-      margin-bottom: .3rem;
+      margin-bottom: .28rem;
     }
 
     .event-pill {
       display: block;
-      font-size: .66rem;
+      font-size: .65rem;
       font-weight: 600;
-      padding: .16rem .42rem;
+      padding: .15rem .4rem;
       border-radius: 4px;
-      margin-bottom: .18rem;
+      margin-bottom: .15rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       cursor: pointer;
       line-height: 1.4;
-      transition: opacity .1s;
     }
 
-    .event-pill:hover { opacity: .82; }
+    .event-pill:hover { opacity: .8; }
+    .event-pill.cont-l  { border-radius: 0 4px 4px 0; margin-left:-4px; padding-left:6px; }
+    .event-pill.cont-r  { border-radius: 4px 0 0 4px; margin-right:-4px; padding-right:6px; }
+    .event-pill.cont-lr { border-radius: 0; margin-left:-4px; margin-right:-4px; padding-left:6px; padding-right:6px; }
 
-    .event-pill.continues-left { border-radius: 0 4px 4px 0; margin-left: -4px; padding-left: 6px; }
-    .event-pill.continues-right { border-radius: 4px 0 0 4px; margin-right: -4px; padding-right: 6px; }
-    .event-pill.continues-both { border-radius: 0; margin-left: -4px; margin-right: -4px; padding-left: 6px; padding-right: 6px; }
+    .more-count { font-size: .61rem; color: var(--muted); font-weight: 600; padding: 0 .35rem; }
 
-    .more-count {
-      font-size: .62rem;
+    /* ── Scroll view ── */
+    .scroll-month { margin-bottom: 2.5rem; }
+
+    /* ── Overview grid ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+
+    @media (max-width: 860px) { .overview-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .overview-grid { grid-template-columns: 1fr; } }
+
+    /* last item centering in 3-col when 5 items */
+    .overview-grid .mini-month:nth-child(3n+1):last-child {
+      grid-column: 2;
+    }
+
+    /* ── Mini calendar (overview) ── */
+    .mini-month { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+
+    .mini-month-hdr {
+      padding: .6rem .85rem .5rem;
+      font-size: .82rem;
+      font-weight: 800;
+      color: var(--navy);
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mini-month-count {
+      font-size: .65rem;
+      font-weight: 700;
+      color: var(--red);
+      background: #FFF1F2;
+      padding: .18rem .5rem;
+      border-radius: 100px;
+    }
+
+    .mini-dow-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      background: #FAFAFA;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mini-dow {
+      padding: .3rem 0;
+      text-align: center;
+      font-size: .56rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
       color: var(--muted);
-      font-weight: 600;
-      padding: 0 .35rem;
+    }
+
+    .mini-dow.is-wknd { color: var(--red); }
+
+    .mini-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .mini-day {
+      min-height: 42px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: .28rem .2rem .2rem;
+      cursor: pointer;
+      transition: background .1s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .mini-day:nth-child(7n) { border-right: none; }
+    .mini-day:hover:not(.other-month) { background: #F8FAFC; }
+    .mini-day.other-month { background: #FAFAFA; cursor: default; }
+    .mini-day.other-month .mini-num { color: #CBD5E1; }
+    .mini-day.free-weekend { background: var(--free-bg); }
+    .mini-day.free-weekend:hover { background: #DCFCE7; }
+
+    .mini-day.is-today .mini-num {
+      background: var(--navy);
+      color: white !important;
+      border-radius: 50%;
+    }
+
+    .mini-num {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .66rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .18rem;
+      flex-shrink: 0;
+    }
+
+    .dot-row {
+      display: flex;
+      gap: 2px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .ev-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
     /* ── Legend ── */
     .cal-legend {
       display: flex;
       flex-wrap: wrap;
-      gap: .85rem 1.5rem;
-      padding: .9rem 1.25rem;
+      gap: .75rem 1.4rem;
+      padding: .8rem 1.1rem;
       border-top: 1px solid var(--border);
       background: #FAFBFC;
     }
@@ -276,58 +328,44 @@
     .legend-item {
       display: flex;
       align-items: center;
-      gap: .4rem;
-      font-size: .72rem;
+      gap: .38rem;
+      font-size: .7rem;
       color: var(--muted);
       font-weight: 500;
     }
 
     .legend-chip {
-      width: 28px;
-      height: 9px;
+      width: 24px; height: 8px;
       border-radius: 3px;
     }
 
-    .legend-chip.free {
-      background: var(--free-bg);
-      border: 1px solid var(--free-border);
-    }
+    .legend-chip.free { background: var(--free-bg); border: 1px solid var(--free-border); }
 
-    /* ── Add button ── */
+    /* ── FAB ── */
     .fab {
       position: fixed;
-      bottom: 1.75rem;
-      right: 1.75rem;
-      width: 54px;
-      height: 54px;
+      bottom: 1.75rem; right: 1.75rem;
+      width: 52px; height: 52px;
       border-radius: 50%;
       background: var(--red);
       color: white;
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       line-height: 1;
       border: none;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(200,16,46,.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       transition: transform .15s, box-shadow .15s;
       z-index: 99;
     }
 
-    .fab:hover {
-      transform: scale(1.07);
-      box-shadow: 0 6px 20px rgba(200,16,46,.55);
-    }
+    .fab:hover { transform: scale(1.07); box-shadow: 0 6px 20px rgba(200,16,46,.55); }
 
     /* ── Modal ── */
     .overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(15,23,42,.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       z-index: 200;
       padding: 1rem;
       backdrop-filter: blur(2px);
@@ -338,51 +376,41 @@
     .modal {
       background: white;
       border-radius: 18px;
-      width: 100%;
-      max-width: 460px;
-      padding: 1.75rem;
+      width: 100%; max-width: 455px;
+      padding: 1.65rem;
       box-shadow: 0 24px 64px rgba(0,0,0,.22);
     }
 
     .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.3rem;
     }
 
-    .modal-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--navy);
-    }
+    .modal-title { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
 
     .modal-close {
       width: 28px; height: 28px;
-      border-radius: 8px;
-      border: none;
-      background: #F1F5F9;
-      color: var(--muted);
-      font-size: 1rem;
-      cursor: pointer;
+      border-radius: 8px; border: none;
+      background: #F1F5F9; color: var(--muted);
+      font-size: .95rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
 
-    .form-group { margin-bottom: 1rem; }
+    .form-group { margin-bottom: .95rem; }
 
     .form-label {
       display: block;
-      font-size: .68rem;
+      font-size: .67rem;
       font-weight: 700;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: .4rem;
+      margin-bottom: .38rem;
     }
 
     .form-input, .form-select, .form-textarea {
       width: 100%;
-      padding: .6rem .8rem;
+      padding: .58rem .78rem;
       border: 1.5px solid var(--border);
       border-radius: 9px;
       font-size: .88rem;
@@ -393,200 +421,115 @@
       transition: border-color .15s;
     }
 
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: #94A3B8;
-    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #94A3B8; }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .75rem;
-    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
 
-    .form-textarea { resize: vertical; min-height: 68px; }
+    .form-textarea { resize: vertical; min-height: 65px; }
 
-    .type-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: .4rem;
-    }
+    .type-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: .35rem; }
 
     .type-chip {
-      padding: .45rem .3rem;
+      padding: .42rem .25rem;
       border-radius: 8px;
       border: 1.5px solid var(--border);
-      font-size: .65rem;
+      font-size: .63rem;
       font-weight: 700;
       text-align: center;
       cursor: pointer;
       transition: all .12s;
       color: var(--muted);
       background: white;
-    }
-
-    .type-chip.selected {
-      border-color: transparent;
+      line-height: 1.5;
     }
 
     .modal-actions {
-      display: flex;
-      gap: .6rem;
-      margin-top: 1.4rem;
-      align-items: center;
+      display: flex; gap: .55rem;
+      margin-top: 1.35rem; align-items: center;
     }
 
     .btn-save {
-      flex: 1;
-      padding: .65rem;
-      background: var(--navy);
-      color: white;
-      border: none;
-      border-radius: 9px;
-      font-size: .85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .15s;
+      flex: 1; padding: .62rem;
+      background: var(--navy); color: white;
+      border: none; border-radius: 9px;
+      font-size: .85rem; font-weight: 700; cursor: pointer;
     }
 
     .btn-save:hover { background: #1E293B; }
 
     .btn-cancel {
-      padding: .65rem 1rem;
-      background: #F1F5F9;
-      color: var(--navy);
-      border: none;
-      border-radius: 9px;
-      font-size: .85rem;
-      font-weight: 600;
-      cursor: pointer;
+      padding: .62rem 1rem;
+      background: #F1F5F9; color: var(--navy);
+      border: none; border-radius: 9px;
+      font-size: .84rem; font-weight: 600; cursor: pointer;
     }
 
     .btn-delete {
-      padding: .65rem .85rem;
-      background: #FEF2F2;
-      color: #DC2626;
-      border: none;
-      border-radius: 9px;
-      font-size: .82rem;
-      font-weight: 600;
-      cursor: pointer;
+      padding: .62rem .8rem;
+      background: #FEF2F2; color: #DC2626;
+      border: none; border-radius: 9px;
+      font-size: .8rem; font-weight: 600; cursor: pointer;
       margin-right: auto;
     }
 
     /* ── Summary view ── */
-    .summary-wrap {
-      max-width: 820px;
-      margin: 1.5rem auto;
-      padding: 0 1rem;
-      display: none;
-    }
-
     .sum-card {
-      background: white;
-      border-radius: 16px;
+      background: white; border-radius: 16px;
       box-shadow: 0 1px 4px rgba(0,0,0,.07);
-      margin-bottom: 1.25rem;
-      overflow: hidden;
+      margin-bottom: 1.2rem; overflow: hidden;
     }
 
-    .sum-card-header {
-      padding: 1rem 1.4rem;
+    .sum-card-hdr {
+      padding: .95rem 1.35rem;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
 
     .sum-card-title {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
     }
 
     .sum-card-count {
-      font-size: .72rem;
-      font-weight: 700;
-      color: var(--navy);
-      background: #F1F5F9;
-      padding: .2rem .55rem;
-      border-radius: 100px;
+      font-size: .7rem; font-weight: 700; color: var(--navy);
+      background: #F1F5F9; padding: .18rem .52rem; border-radius: 100px;
     }
 
     .sum-row {
-      display: flex;
-      align-items: flex-start;
-      gap: .9rem;
-      padding: .85rem 1.4rem;
+      display: flex; align-items: flex-start; gap: .85rem;
+      padding: .82rem 1.35rem;
       border-bottom: 1px solid #F8FAFC;
-      cursor: pointer;
-      transition: background .1s;
+      cursor: pointer; transition: background .1s;
     }
 
     .sum-row:last-child { border-bottom: none; }
     .sum-row:hover { background: #FAFAFA; }
 
-    .sum-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 3px;
-      flex-shrink: 0;
-      margin-top: .3rem;
-    }
-
-    .sum-row-title {
-      font-weight: 600;
-      font-size: .88rem;
-      color: var(--navy);
-    }
-
-    .sum-row-meta {
-      font-size: .76rem;
-      color: var(--muted);
-      margin-top: .15rem;
-    }
-
-    .sum-empty {
-      padding: 1.5rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: .85rem;
-    }
+    .sum-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; margin-top: .28rem; }
+    .sum-row-title { font-weight: 600; font-size: .87rem; color: var(--navy); }
+    .sum-row-meta { font-size: .74rem; color: var(--muted); margin-top: .12rem; }
+    .sum-empty { padding: 1.4rem; text-align: center; color: var(--muted); font-size: .85rem; }
 
     .streak-row {
-      display: flex;
-      align-items: center;
-      gap: .9rem;
-      padding: .8rem 1.4rem;
+      display: flex; align-items: center; gap: .85rem;
+      padding: .78rem 1.35rem;
       border-bottom: 1px solid #F8FAFC;
     }
 
     .streak-row:last-child { border-bottom: none; }
 
     .streak-pill {
-      font-size: .7rem;
-      font-weight: 700;
-      padding: .25rem .65rem;
-      border-radius: 100px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      font-size: .68rem; font-weight: 700;
+      padding: .22rem .6rem; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
     }
 
-    .streak-pill.free { background: #DCFCE7; color: #166534; }
+    .streak-pill.free    { background: #DCFCE7; color: #166534; }
     .streak-pill.weekend { background: #EEF2FF; color: #3730A3; }
-
-    .streak-text {
-      font-size: .85rem;
-      color: var(--navy);
-      font-weight: 500;
-    }
+    .streak-text { font-size: .84rem; color: var(--navy); font-weight: 500; }
 
     /* ── Responsive ── */
     @media (max-width: 600px) {
-      .cal-day { min-height: 72px; padding: .35rem .25rem; }
-      .event-pill { font-size: .6rem; padding: .12rem .3rem; }
-      .cal-month-label { font-size: 1.1rem; }
+      .cal-day { min-height: 72px; }
       .type-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
@@ -603,33 +546,20 @@
     </div>
   </div>
   <div class="view-toggle">
-    <button class="view-btn active" id="btnCalView" onclick="setView('calendar')">📅 Calendar</button>
-    <button class="view-btn" id="btnSumView" onclick="setView('summary')">📋 Summary</button>
+    <button class="view-btn active" id="btnScroll"   onclick="setView('scroll')">📅 Scroll</button>
+    <button class="view-btn"        id="btnOverview" onclick="setView('overview')">🗓 Overview</button>
+    <button class="view-btn"        id="btnSummary"  onclick="setView('summary')">📋 Summary</button>
   </div>
 </header>
 
-<!-- ── Month Tabs ── -->
-<nav class="month-nav" id="monthNav"></nav>
+<!-- ── Scroll View (all months stacked) ── -->
+<div id="scrollView" class="view-wrap"></div>
 
-<!-- ── Calendar View ── -->
-<div class="calendar-wrap" id="calView">
-  <div class="cal-month-label" id="monthLabel"></div>
-  <div class="cal-grid">
-    <div class="cal-dow-row" id="dowRow"></div>
-    <div class="cal-days" id="calDays"></div>
-    <div class="cal-legend">
-      <div class="legend-item"><div class="legend-chip" style="background:#FED7AA;"></div>Travel</div>
-      <div class="legend-item"><div class="legend-chip" style="background:#C7D2FE;"></div>Commitment</div>
-      <div class="legend-item"><div class="legend-chip" style="background:#FBCFE8;"></div>Family Event</div>
-      <div class="legend-item"><div class="legend-chip" style="background:#A7F3D0;"></div>Holiday</div>
-      <div class="legend-item"><div class="legend-chip" style="background:#E2E8F0;"></div>Other</div>
-      <div class="legend-item"><div class="legend-chip free"></div>Free Weekend</div>
-    </div>
-  </div>
-</div>
+<!-- ── Overview View (all months in grid) ── -->
+<div id="overviewView" class="view-wrap" style="display:none"></div>
 
 <!-- ── Summary View ── -->
-<div class="summary-wrap" id="sumView"></div>
+<div id="summaryView" class="view-wrap" style="display:none"></div>
 
 <!-- ── FAB ── -->
 <button class="fab" onclick="openModal()" title="Add Event">＋</button>
@@ -641,17 +571,14 @@
       <div class="modal-title" id="modalTitle">Add Event</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-
     <div class="form-group">
       <label class="form-label">Title</label>
-      <input type="text" class="form-input" id="evTitle" placeholder="e.g. Yellowstone Trip">
+      <input type="text" class="form-input" id="evTitle" placeholder="e.g. Beach Trip">
     </div>
-
     <div class="form-group">
       <label class="form-label">Type</label>
       <div class="type-grid" id="typeGrid"></div>
     </div>
-
     <div class="form-group form-row">
       <div>
         <label class="form-label">Start</label>
@@ -662,12 +589,10 @@
         <input type="date" class="form-input" id="evEnd" min="2026-05-01" max="2026-09-30">
       </div>
     </div>
-
     <div class="form-group">
       <label class="form-label">Notes <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
       <textarea class="form-textarea" id="evNotes" placeholder="Details, location, who's going…"></textarea>
     </div>
-
     <div class="modal-actions">
       <button class="btn-delete" id="btnDelete" style="display:none" onclick="deleteEvent()">🗑 Delete</button>
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -677,419 +602,330 @@
 </div>
 
 <script>
-// ── Constants ───────────────────────────────────────────
+// ── Constants ────────────────────────────────────────────
 const YEAR = 2026;
-const SUMMER = [4, 5, 6, 7, 8]; // May–Sep (0-indexed months)
-const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DOW_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const STORAGE_KEY = 'family-cal-2026';
+const SUMMER = [4,5,6,7,8]; // May–Sep
+const MONTH_NAMES  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW_LABELS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const STORAGE_KEY  = 'family-cal-2026';
 
 const TYPES = {
-  travel:     { label: 'Travel',       emoji: '✈️',  color: '#F97316', bg: '#FFF7ED', text: '#9A3412', chip: '#FED7AA' },
-  commitment: { label: 'Commitment',   emoji: '📌',  color: '#6366F1', bg: '#EEF2FF', text: '#3730A3', chip: '#C7D2FE' },
-  family:     { label: 'Family',       emoji: '👨‍👩‍👧‍👦', color: '#EC4899', bg: '#FDF2F8', text: '#9D174D', chip: '#FBCFE8' },
-  holiday:    { label: 'Holiday',      emoji: '🎉',  color: '#10B981', bg: '#ECFDF5', text: '#065F46', chip: '#A7F3D0' },
-  other:      { label: 'Other',        emoji: '📎',  color: '#94A3B8', bg: '#F8FAFC', text: '#475569', chip: '#E2E8F0' },
+  travel:     { label:'Travel',       emoji:'✈️',  color:'#F97316', bg:'#FFF7ED', text:'#9A3412' },
+  commitment: { label:'Commitment',   emoji:'📌',  color:'#6366F1', bg:'#EEF2FF', text:'#3730A3' },
+  family:     { label:'Family',       emoji:'👨‍👩‍👧‍👦', color:'#EC4899', bg:'#FDF2F8', text:'#9D174D' },
+  holiday:    { label:'Holiday',      emoji:'🎉',  color:'#10B981', bg:'#ECFDF5', text:'#065F46' },
+  other:      { label:'Other',        emoji:'📎',  color:'#94A3B8', bg:'#F8FAFC', text:'#475569' },
 };
 
 // ── State ────────────────────────────────────────────────
-let events = loadEvents();
-let currentMonth = (() => {
-  const m = new Date().getMonth();
-  return SUMMER.includes(m) ? m : 4;
-})();
-let view = 'calendar';
+let events = load();
+let view = 'scroll';
 let editingId = null;
 let selectedType = 'travel';
 
-// ── Persistence ──────────────────────────────────────────
-function loadEvents() {
+function load() {
   try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
   return [];
 }
 
-function persist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-}
+function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(events)); }
 
 // ── Date helpers ─────────────────────────────────────────
-function ds(y, m, d) {
-  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-}
-
-function parseDs(s) {
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y, m-1, d);
-}
-
-function todayStr() {
-  const t = new Date();
-  return ds(t.getFullYear(), t.getMonth(), t.getDate());
-}
-
-function daysInMonth(y, m) {
-  return new Date(y, m+1, 0).getDate();
-}
-
-function startDow(y, m) {
-  return new Date(y, m, 1).getDay();
-}
-
-function fmtDate(s) {
-  return parseDs(s).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-}
-
-function fmtRange(s, e) {
-  if (s === e) return fmtDate(s);
-  const sd = parseDs(s), ed = parseDs(e);
-  if (sd.getMonth() === ed.getMonth() && sd.getFullYear() === ed.getFullYear()) {
+function ds(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function parseDs(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function todayStr() { const t=new Date(); return ds(t.getFullYear(),t.getMonth(),t.getDate()); }
+function daysInMonth(y,m) { return new Date(y,m+1,0).getDate(); }
+function startDow(y,m) { return new Date(y,m,1).getDay(); }
+function fmtDate(s) { return parseDs(s).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function fmtRange(s,e) {
+  if (s===e) return fmtDate(s);
+  const sd=parseDs(s),ed=parseDs(e);
+  if (sd.getMonth()===ed.getMonth()&&sd.getFullYear()===ed.getFullYear())
     return `${sd.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${ed.getDate()}, ${ed.getFullYear()}`;
-  }
   return `${fmtDate(s)} – ${fmtDate(e)}`;
 }
+function dayCount(s,e) { return Math.round((parseDs(e)-parseDs(s))/86400000)+1; }
+function eventsOnDay(str) { return events.filter(e=>e.start<=str&&e.end>=str); }
+function uid() { return 'ev-'+Date.now()+'-'+Math.random().toString(36).slice(2,7); }
 
-function dayCount(s, e) {
-  return Math.round((parseDs(e) - parseDs(s)) / 86400000) + 1;
+// ── Legend HTML ──────────────────────────────────────────
+const LEGEND_HTML = `
+  <div class="cal-legend">
+    <div class="legend-item"><div class="legend-chip" style="background:#FED7AA"></div>Travel</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#C7D2FE"></div>Commitment</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#FBCFE8"></div>Family</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#A7F3D0"></div>Holiday</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#E2E8F0"></div>Other</div>
+    <div class="legend-item"><div class="legend-chip free"></div>Free Weekend</div>
+  </div>`;
+
+// ── Build a full-size month grid ──────────────────────────
+function buildFullMonth(m) {
+  const y=YEAR, today=todayStr();
+  const total=daysInMonth(y,m), first=startDow(y,m);
+  const prevTotal=daysInMonth(y,m-1);
+
+  const dowHdr = DOW_LABELS.map((d,i)=>
+    `<div class="cal-dow ${i===0||i===6?'is-weekend':''}">${d}</div>`).join('');
+
+  let cells='';
+  for (let i=first-1;i>=0;i--)
+    cells+=`<div class="cal-day other-month"><div class="day-num">${prevTotal-i}</div></div>`;
+
+  for (let d=1;d<=total;d++) {
+    const str=ds(y,m,d), dow=new Date(y,m,d).getDay();
+    const evs=eventsOnDay(str);
+    const isToday=str===today, isSat=dow===6, isSun=dow===0;
+    let freeWknd=false;
+    if (isSat&&d+1<=total)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d+1)).length===0;
+    else if (isSun&&d>1)        freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d-1)).length===0;
+    else if (isSun&&d===1)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m-1,daysInMonth(y,m-1))).length===0;
+
+    const cls=['cal-day',isToday?'is-today':'',freeWknd?'free-weekend':''].filter(Boolean).join(' ');
+    let pills='';
+    evs.slice(0,2).forEach(ev=>{
+      const t=TYPES[ev.type]||TYPES.other;
+      const sl=ev.start===str, el=ev.end===str;
+      const cc=!sl&&!el?'cont-lr':!sl?'cont-l':!el?'cont-r':'';
+      pills+=`<span class="event-pill ${cc}" style="background:${t.bg};color:${t.text};border-left:2px solid ${t.color};"
+        onclick="openModal('${ev.id}');event.stopPropagation();">${sl?ev.title:''}</span>`;
+    });
+    if (evs.length>2) pills+=`<span class="more-count">+${evs.length-2}</span>`;
+    cells+=`<div class="${cls}" onclick="openModal(null,'${str}')"><div class="day-num">${d}</div>${pills}</div>`;
+  }
+
+  const used=first+total, pad=used%7===0?0:7-(used%7);
+  for (let d=1;d<=pad;d++)
+    cells+=`<div class="cal-day other-month"><div class="day-num">${d}</div></div>`;
+
+  return `
+    <div class="cal-grid">
+      <div class="cal-dow-row">${dowHdr}</div>
+      <div class="cal-days">${cells}</div>
+      ${LEGEND_HTML}
+    </div>`;
 }
 
-// ── Event helpers ────────────────────────────────────────
-function eventsOnDay(str) {
-  return events.filter(e => e.start <= str && e.end >= str);
-}
+// ── Build a mini month (overview) ────────────────────────
+function buildMiniMonth(m) {
+  const y=YEAR, today=todayStr();
+  const total=daysInMonth(y,m), first=startDow(y,m);
+  const prevTotal=daysInMonth(y,m-1);
+  const evCount=events.filter(e=>{
+    const em=parseInt(e.start.split('-')[1])-1, ee=parseInt(e.end.split('-')[1])-1;
+    return em<=m&&ee>=m;
+  }).length;
 
-function uid() {
-  return 'ev-' + Date.now() + '-' + Math.random().toString(36).slice(2,7);
-}
+  const dowHdr=DOW_LABELS.map((d,i)=>
+    `<div class="mini-dow ${i===0||i===6?'is-wknd':''}">${d[0]}</div>`).join('');
 
-// ── Month nav ─────────────────────────────────────────────
-function buildMonthNav() {
-  const nav = document.getElementById('monthNav');
-  nav.innerHTML = SUMMER.map(m => {
-    const count = events.filter(e => {
-      const es = parseInt(e.start.split('-')[1])-1;
-      const ee = parseInt(e.end.split('-')[1])-1;
-      return es <= m && ee >= m;
-    }).length;
-    return `
-      <button class="month-tab ${m===currentMonth?'active':''} ${count>0?'has-events':''}"
-              onclick="switchMonth(${m})">
+  let cells='';
+  for (let i=first-1;i>=0;i--)
+    cells+=`<div class="mini-day other-month"><div class="mini-num">${prevTotal-i}</div></div>`;
+
+  for (let d=1;d<=total;d++) {
+    const str=ds(y,m,d), dow=new Date(y,m,d).getDay();
+    const evs=eventsOnDay(str);
+    const isToday=str===today, isSat=dow===6, isSun=dow===0;
+    let freeWknd=false;
+    if (isSat&&d+1<=total)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d+1)).length===0;
+    else if (isSun&&d>1)        freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d-1)).length===0;
+    else if (isSun&&d===1)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m-1,daysInMonth(y,m-1))).length===0;
+
+    const cls=['mini-day',isToday?'is-today':'',freeWknd?'free-weekend':''].filter(Boolean).join(' ');
+    const dots=evs.slice(0,3).map(ev=>{
+      const t=TYPES[ev.type]||TYPES.other;
+      return `<div class="ev-dot" style="background:${t.color}" onclick="openModal('${ev.id}');event.stopPropagation();"></div>`;
+    }).join('');
+    const dotRow=evs.length?`<div class="dot-row">${dots}${evs.length>3?`<div class="ev-dot" style="background:#CBD5E1"></div>`:''}</div>`:'';
+    cells+=`<div class="${cls}" onclick="openModal(null,'${str}')"><div class="mini-num">${d}</div>${dotRow}</div>`;
+  }
+
+  const used=first+total, pad=used%7===0?0:7-(used%7);
+  for (let d=1;d<=pad;d++)
+    cells+=`<div class="mini-day other-month"><div class="mini-num">${d}</div></div>`;
+
+  return `
+    <div class="mini-month">
+      <div class="mini-month-hdr">
         ${MONTH_NAMES[m]}
-        <span class="month-tab-count">${count>0?count+' event'+(count>1?'s':''):''}</span>
-      </button>`;
-  }).join('');
+        ${evCount>0?`<span class="mini-month-count">${evCount} event${evCount>1?'s':''}</span>`:''}
+      </div>
+      <div class="mini-dow-row">${dowHdr}</div>
+      <div class="mini-days">${cells}</div>
+    </div>`;
 }
 
-function switchMonth(m) {
-  currentMonth = m;
-  buildMonthNav();
-  renderCalendar();
+// ── Render views ─────────────────────────────────────────
+function renderScroll() {
+  document.getElementById('scrollView').innerHTML =
+    SUMMER.map(m => `
+      <div class="scroll-month">
+        <div class="month-heading">${MONTH_NAMES[m]} <span>${YEAR}</span></div>
+        ${buildFullMonth(m)}
+      </div>`).join('');
 }
 
-// ── Calendar render ───────────────────────────────────────
-function renderCalendar() {
-  const y = YEAR, m = currentMonth;
-  const total = daysInMonth(y, m);
-  const first = startDow(y, m);
-  const today = todayStr();
-
-  document.getElementById('monthLabel').innerHTML =
-    `${MONTH_NAMES[m]} <span>${y}</span>`;
-
-  // DOW headers
-  document.getElementById('dowRow').innerHTML = DOW_LABELS.map((d,i) =>
-    `<div class="cal-dow ${i===0||i===6?'is-weekend':''}">${d}</div>`
-  ).join('');
-
-  let html = '';
-
-  // Prev month padding
-  const prevTotal = daysInMonth(y, m-1);
-  for (let i = first-1; i >= 0; i--) {
-    html += `<div class="cal-day other-month"><div class="day-num">${prevTotal-i}</div></div>`;
-  }
-
-  // Current month
-  for (let d = 1; d <= total; d++) {
-    const str = ds(y, m, d);
-    const dow = new Date(y, m, d).getDay();
-    const evs = eventsOnDay(str);
-    const isToday = str === today;
-    const isSat = dow === 6, isSun = dow === 0;
-
-    // Free-weekend highlight (both Sat+Sun have no events)
-    let freeWknd = false;
-    if (isSat && d+1 <= total) {
-      freeWknd = evs.length===0 && eventsOnDay(ds(y,m,d+1)).length===0;
-    } else if (isSun) {
-      const satStr = d > 1 ? ds(y,m,d-1) : ds(y,m-1,daysInMonth(y,m-1));
-      freeWknd = evs.length===0 && eventsOnDay(satStr).length===0;
-    }
-
-    const cls = ['cal-day',
-      isToday ? 'is-today' : '',
-      freeWknd ? 'free-weekend' : '',
-      evs.length > 0 ? 'has-events' : '',
-    ].filter(Boolean).join(' ');
-
-    // Event pills (show up to 2)
-    let pills = '';
-    evs.slice(0,2).forEach(ev => {
-      const t = TYPES[ev.type] || TYPES.other;
-      // Continuation markers for multi-day events
-      const startsHere = ev.start === str;
-      const endsHere   = ev.end === str;
-      let contCls = '';
-      if (!startsHere && !endsHere) contCls = 'continues-both';
-      else if (!startsHere) contCls = 'continues-left';
-      else if (!endsHere)   contCls = 'continues-right';
-      const label = startsHere ? ev.title : '';
-      pills += `<span class="event-pill ${contCls}"
-        style="background:${t.bg};color:${t.text};border-left:2px solid ${t.color};"
-        onclick="openModal('${ev.id}');event.stopPropagation();">${label}</span>`;
-    });
-    if (evs.length > 2) pills += `<span class="more-count">+${evs.length-2}</span>`;
-
-    html += `
-      <div class="${cls}" onclick="openModal(null,'${str}')">
-        <div class="day-num">${d}</div>
-        ${pills}
-      </div>`;
-  }
-
-  // Next month padding
-  const used = first + total;
-  const pad = used % 7 === 0 ? 0 : 7 - (used % 7);
-  for (let d = 1; d <= pad; d++) {
-    html += `<div class="cal-day other-month"><div class="day-num">${d}</div></div>`;
-  }
-
-  document.getElementById('calDays').innerHTML = html;
+function renderOverview() {
+  const grid = SUMMER.map(m => buildMiniMonth(m)).join('');
+  document.getElementById('overviewView').innerHTML = `
+    <div class="overview-grid">${grid}</div>
+    ${LEGEND_HTML.replace('cal-legend','cal-legend').replace('style="','style="margin-top:.5rem;border-radius:12px;')}`;
 }
 
-// ── Summary render ────────────────────────────────────────
 function renderSummary() {
-  const wrap = document.getElementById('sumView');
-  const sorted = [...events].sort((a,b) => a.start.localeCompare(b.start));
-  let html = '';
+  const sorted=[...events].sort((a,b)=>a.start.localeCompare(b.start));
+  let html='';
 
-  // All events
-  html += `<div class="sum-card">
-    <div class="sum-card-header">
-      <div class="sum-card-title">All Events</div>
-      <div class="sum-card-count">${sorted.length}</div>
-    </div>`;
-  if (sorted.length === 0) {
-    html += `<div class="sum-empty">No events yet — tap ＋ to add your first.</div>`;
-  } else {
-    sorted.forEach(ev => {
-      const t = TYPES[ev.type] || TYPES.other;
-      const days = dayCount(ev.start, ev.end);
-      html += `<div class="sum-row" onclick="openModal('${ev.id}')">
-        <div class="sum-dot" style="background:${t.color}"></div>
-        <div>
-          <div class="sum-row-title">${ev.title}</div>
-          <div class="sum-row-meta">${fmtRange(ev.start,ev.end)} · ${t.label}${days>1?' · '+days+' days':''}${ev.notes?' · '+ev.notes:''}</div>
-        </div>
-      </div>`;
-    });
-  }
-  html += `</div>`;
+  html+=`<div class="sum-card">
+    <div class="sum-card-hdr"><div class="sum-card-title">All Events</div><div class="sum-card-count">${sorted.length}</div></div>`;
+  if (!sorted.length) html+=`<div class="sum-empty">No events yet — tap ＋ to add your first.</div>`;
+  else sorted.forEach(ev=>{
+    const t=TYPES[ev.type]||TYPES.other, days=dayCount(ev.start,ev.end);
+    html+=`<div class="sum-row" onclick="openModal('${ev.id}')">
+      <div class="sum-dot" style="background:${t.color}"></div>
+      <div>
+        <div class="sum-row-title">${ev.title}</div>
+        <div class="sum-row-meta">${fmtRange(ev.start,ev.end)} · ${t.label}${days>1?' · '+days+' days':''}${ev.notes?' · '+ev.notes:''}</div>
+      </div></div>`;
+  });
+  html+=`</div>`;
 
-  // Longest free stretches
-  const stretches = calcFreeStretches();
-  html += `<div class="sum-card">
-    <div class="sum-card-header">
-      <div class="sum-card-title">Longest Free Stretches</div>
-      <div class="sum-card-count">${stretches.length}</div>
-    </div>`;
-  if (stretches.length === 0) {
-    html += `<div class="sum-empty">No open stretches found — you're fully booked!</div>`;
-  } else {
-    stretches.slice(0,8).forEach(s => {
-      html += `<div class="streak-row">
-        <span class="streak-pill free">${s.days} day${s.days>1?'s':''}</span>
-        <span class="streak-text">${fmtRange(s.start,s.end)}</span>
-      </div>`;
-    });
-  }
-  html += `</div>`;
+  const stretches=calcStretches();
+  html+=`<div class="sum-card">
+    <div class="sum-card-hdr"><div class="sum-card-title">Longest Free Stretches</div><div class="sum-card-count">${stretches.length}</div></div>`;
+  if (!stretches.length) html+=`<div class="sum-empty">No open stretches found.</div>`;
+  else stretches.slice(0,8).forEach(s=>
+    html+=`<div class="streak-row"><span class="streak-pill free">${s.days} day${s.days>1?'s':''}</span><span class="streak-text">${fmtRange(s.start,s.end)}</span></div>`);
+  html+=`</div>`;
 
-  // Free weekends
-  const weekends = calcFreeWeekends();
-  html += `<div class="sum-card">
-    <div class="sum-card-header">
-      <div class="sum-card-title">Free Weekends</div>
-      <div class="sum-card-count">${weekends.length}</div>
-    </div>`;
-  if (weekends.length === 0) {
-    html += `<div class="sum-empty">No fully free weekends found.</div>`;
-  } else {
-    weekends.forEach(w => {
-      html += `<div class="streak-row">
-        <span class="streak-pill weekend">Weekend</span>
-        <span class="streak-text">${fmtRange(w.sat,w.sun)}</span>
-      </div>`;
-    });
-  }
-  html += `</div>`;
+  const wknds=calcFreeWeekends();
+  html+=`<div class="sum-card">
+    <div class="sum-card-hdr"><div class="sum-card-title">Free Weekends</div><div class="sum-card-count">${wknds.length}</div></div>`;
+  if (!wknds.length) html+=`<div class="sum-empty">No fully free weekends found.</div>`;
+  else wknds.forEach(w=>
+    html+=`<div class="streak-row"><span class="streak-pill weekend">Weekend</span><span class="streak-text">${fmtRange(w.sat,w.sun)}</span></div>`);
+  html+=`</div>`;
 
-  wrap.innerHTML = html;
+  document.getElementById('summaryView').innerHTML=html;
 }
 
-function calcFreeStretches() {
-  const start = new Date(YEAR,4,10), end = new Date(YEAR,8,30);
-  const stretches = [];
-  let streakStart = null, len = 0;
-
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
-    const s = ds(d.getFullYear(), d.getMonth(), d.getDate());
-    if (eventsOnDay(s).length === 0) {
-      if (!streakStart) streakStart = s;
-      len++;
-    } else {
-      if (len >= 2 && streakStart) {
-        const e2 = new Date(d); e2.setDate(e2.getDate()-1);
-        stretches.push({ start: streakStart, end: ds(e2.getFullYear(),e2.getMonth(),e2.getDate()), days: len });
-      }
-      streakStart = null; len = 0;
+function calcStretches() {
+  const start=new Date(YEAR,4,10), end=new Date(YEAR,8,30);
+  const out=[]; let ss=null, len=0;
+  for (let d=new Date(start);d<=end;d.setDate(d.getDate()+1)) {
+    const s=ds(d.getFullYear(),d.getMonth(),d.getDate());
+    if (!eventsOnDay(s).length) { if (!ss) ss=s; len++; }
+    else {
+      if (len>=2&&ss) { const e2=new Date(d); e2.setDate(e2.getDate()-1); out.push({start:ss,end:ds(e2.getFullYear(),e2.getMonth(),e2.getDate()),days:len}); }
+      ss=null; len=0;
     }
   }
-  if (len >= 2 && streakStart) {
-    stretches.push({ start: streakStart, end: ds(end.getFullYear(),end.getMonth(),end.getDate()), days: len });
-  }
-  return stretches.sort((a,b) => b.days - a.days);
+  if (len>=2&&ss) out.push({start:ss,end:ds(end.getFullYear(),end.getMonth(),end.getDate()),days:len});
+  return out.sort((a,b)=>b.days-a.days);
 }
 
 function calcFreeWeekends() {
-  const start = new Date(YEAR,4,1), end = new Date(YEAR,8,30);
-  const result = [];
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
-    if (d.getDay() === 6) {
-      const sat = ds(d.getFullYear(),d.getMonth(),d.getDate());
-      const sun = (() => { const s = new Date(d); s.setDate(s.getDate()+1); return ds(s.getFullYear(),s.getMonth(),s.getDate()); })();
-      if (eventsOnDay(sat).length===0 && eventsOnDay(sun).length===0) result.push({sat,sun});
+  const out=[];
+  for (let d=new Date(YEAR,4,1);d<=new Date(YEAR,8,30);d.setDate(d.getDate()+1)) {
+    if (d.getDay()===6) {
+      const sat=ds(d.getFullYear(),d.getMonth(),d.getDate());
+      const s2=new Date(d); s2.setDate(s2.getDate()+1);
+      const sun=ds(s2.getFullYear(),s2.getMonth(),s2.getDate());
+      if (!eventsOnDay(sat).length&&!eventsOnDay(sun).length) out.push({sat,sun});
     }
   }
-  return result;
+  return out;
 }
 
-// ── View toggle ───────────────────────────────────────────
+// ── View switching ────────────────────────────────────────
 function setView(v) {
-  view = v;
-  document.getElementById('btnCalView').classList.toggle('active', v==='calendar');
-  document.getElementById('btnSumView').classList.toggle('active', v==='summary');
-  document.getElementById('calView').style.display = v==='calendar' ? 'block' : 'none';
-  document.getElementById('sumView').style.display = v==='summary' ? 'block' : 'none';
-  if (v==='summary') renderSummary();
+  view=v;
+  ['scroll','overview','summary'].forEach(k=>{
+    document.getElementById('btn'+k.charAt(0).toUpperCase()+k.slice(1)).classList.toggle('active',k===v);
+    document.getElementById(k+'View').style.display=k===v?'block':'none';
+  });
+  if (v==='scroll')   renderScroll();
+  if (v==='overview') renderOverview();
+  if (v==='summary')  renderSummary();
 }
 
 // ── Type selector ─────────────────────────────────────────
-function buildTypeGrid(selected) {
-  selectedType = selected || 'travel';
-  document.getElementById('typeGrid').innerHTML = Object.entries(TYPES).map(([k,t]) => `
-    <button class="type-chip ${selectedType===k?'selected':''}"
-      id="tc-${k}"
+function buildTypeGrid(sel) {
+  selectedType=sel||'travel';
+  document.getElementById('typeGrid').innerHTML=Object.entries(TYPES).map(([k,t])=>`
+    <button class="type-chip ${selectedType===k?'selected':''}" id="tc-${k}"
       style="${selectedType===k?`background:${t.bg};color:${t.text};border-color:${t.color};`:''}"
-      onclick="selectType('${k}')">
-      ${t.emoji}<br>${t.label}
-    </button>`).join('');
+      onclick="selectType('${k}')">${t.emoji}<br>${t.label}</button>`).join('');
 }
 
 function selectType(k) {
-  selectedType = k;
-  document.querySelectorAll('.type-chip').forEach(el => {
-    const key = el.id.replace('tc-','');
-    const t = TYPES[key];
-    el.classList.toggle('selected', key===k);
-    el.style.background = key===k ? t.bg : '';
-    el.style.color = key===k ? t.text : '';
-    el.style.borderColor = key===k ? t.color : '';
+  selectedType=k;
+  document.querySelectorAll('.type-chip').forEach(el=>{
+    const key=el.id.replace('tc-',''), t=TYPES[key];
+    el.classList.toggle('selected',key===k);
+    el.style.background=key===k?t.bg:'';
+    el.style.color=key===k?t.text:'';
+    el.style.borderColor=key===k?t.color:'';
   });
 }
 
 // ── Modal ─────────────────────────────────────────────────
-function openModal(id=null, date=null) {
-  editingId = id;
-  const overlay = document.getElementById('overlay');
-  const btnDel = document.getElementById('btnDelete');
-
+function openModal(id=null,date=null) {
+  editingId=id;
+  const btnDel=document.getElementById('btnDelete');
   if (id) {
-    const ev = events.find(e => e.id===id);
-    if (!ev) return;
-    document.getElementById('modalTitle').textContent = 'Edit Event';
-    document.getElementById('evTitle').value = ev.title;
-    document.getElementById('evStart').value = ev.start;
-    document.getElementById('evEnd').value = ev.end;
-    document.getElementById('evNotes').value = ev.notes || '';
-    buildTypeGrid(ev.type);
-    btnDel.style.display = 'block';
+    const ev=events.find(e=>e.id===id); if (!ev) return;
+    document.getElementById('modalTitle').textContent='Edit Event';
+    document.getElementById('evTitle').value=ev.title;
+    document.getElementById('evStart').value=ev.start;
+    document.getElementById('evEnd').value=ev.end;
+    document.getElementById('evNotes').value=ev.notes||'';
+    buildTypeGrid(ev.type); btnDel.style.display='block';
   } else {
-    document.getElementById('modalTitle').textContent = 'Add Event';
-    document.getElementById('evTitle').value = '';
-    document.getElementById('evStart').value = date || '';
-    document.getElementById('evEnd').value = date || '';
-    document.getElementById('evNotes').value = '';
-    buildTypeGrid('travel');
-    btnDel.style.display = 'none';
+    document.getElementById('modalTitle').textContent='Add Event';
+    document.getElementById('evTitle').value='';
+    document.getElementById('evStart').value=date||'';
+    document.getElementById('evEnd').value=date||'';
+    document.getElementById('evNotes').value='';
+    buildTypeGrid('travel'); btnDel.style.display='none';
   }
-
-  overlay.classList.remove('hidden');
-  setTimeout(() => document.getElementById('evTitle').focus(), 60);
+  document.getElementById('overlay').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('evTitle').focus(),60);
 }
 
-function closeModal() {
-  document.getElementById('overlay').classList.add('hidden');
-  editingId = null;
-}
-
-function overlayClick(e) {
-  if (e.target === document.getElementById('overlay')) closeModal();
-}
+function closeModal() { document.getElementById('overlay').classList.add('hidden'); editingId=null; }
+function overlayClick(e) { if (e.target===document.getElementById('overlay')) closeModal(); }
 
 function saveEvent() {
-  const title = document.getElementById('evTitle').value.trim();
-  const start = document.getElementById('evStart').value;
-  const end   = document.getElementById('evEnd').value;
-  const notes = document.getElementById('evNotes').value.trim();
-
-  if (!title)        { alert('Please enter a title.'); return; }
-  if (!start||!end)  { alert('Please select start and end dates.'); return; }
-  if (start > end)   { alert('End date must be on or after start date.'); return; }
-
-  if (editingId) {
-    events = events.map(e => e.id===editingId
-      ? { ...e, title, type: selectedType, start, end, notes } : e);
-  } else {
-    events.push({ id: uid(), title, type: selectedType, start, end, notes });
-  }
-
-  persist();
-  closeModal();
-  refresh();
+  const title=document.getElementById('evTitle').value.trim();
+  const start=document.getElementById('evStart').value;
+  const end=document.getElementById('evEnd').value;
+  const notes=document.getElementById('evNotes').value.trim();
+  if (!title)      { alert('Please enter a title.'); return; }
+  if (!start||!end){ alert('Please select dates.'); return; }
+  if (start>end)   { alert('End must be on or after start.'); return; }
+  if (editingId) events=events.map(e=>e.id===editingId?{...e,title,type:selectedType,start,end,notes}:e);
+  else events.push({id:uid(),title,type:selectedType,start,end,notes});
+  persist(); closeModal(); refresh();
 }
 
 function deleteEvent() {
-  if (!editingId || !confirm('Remove this event?')) return;
-  events = events.filter(e => e.id !== editingId);
-  persist();
-  closeModal();
-  refresh();
+  if (!editingId||!confirm('Remove this event?')) return;
+  events=events.filter(e=>e.id!==editingId);
+  persist(); closeModal(); refresh();
 }
 
 function refresh() {
-  buildMonthNav();
-  if (view === 'calendar') renderCalendar();
-  else renderSummary();
+  if (view==='scroll')   renderScroll();
+  if (view==='overview') renderOverview();
+  if (view==='summary')  renderSummary();
 }
 
-// ── Keyboard ──────────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
+document.addEventListener('keydown',e=>{ if (e.key==='Escape') closeModal(); });
 
 // ── Init ──────────────────────────────────────────────────
-buildMonthNav();
-renderCalendar();
+setView('scroll');
 </script>
 </body>
 </html>
