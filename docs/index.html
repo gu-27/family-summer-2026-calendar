@@ -158,12 +158,14 @@
     }
 
     .cal-day:nth-child(7n) { border-right: none; }
-    .cal-day:hover:not(.other-month) { background: #F8FAFC; }
+    .cal-day:not(.other-month) { background: #DCFCE7; }
+    .cal-day:not(.other-month):hover { background: #BBF7D0; }
+    .cal-day.has-events { background: #FFE4E8; }
+    .cal-day.has-events:hover { background: #FECDD3; }
+    .cal-day.tentative { background: #FEF9C3; }
+    .cal-day.tentative:hover { background: #FEF08A; }
     .cal-day.other-month { background: #FAFAFA; cursor: default; }
     .cal-day.other-month .day-num { color: #CBD5E1; }
-
-    .cal-day.free-weekend { background: var(--free-bg); }
-    .cal-day.free-weekend:hover { background: #DCFCE7; }
 
     .cal-day.is-today .day-num {
       background: var(--navy);
@@ -201,8 +203,98 @@
 
     .more-count { font-size: .61rem; color: var(--muted); font-weight: 600; padding: 0 .35rem; }
 
-    /* ── Scroll view ── */
-    .scroll-month { margin-bottom: 2.5rem; }
+    /* ── Continuous scroll view ── */
+    .cont-wrap {
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+      overflow: hidden;
+    }
+
+    /* Single flat grid — gap creates the grid lines */
+    .cont-grid {
+      display: grid;
+      grid-template-columns: 72px repeat(7, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .cont-hdr-spacer {
+      background: #F0F4F8;
+    }
+
+    .cont-dow {
+      background: #F8FAFC;
+      padding: .6rem 0;
+      text-align: center;
+      font-size: .66rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .cont-dow.is-weekend { color: var(--red); }
+
+    .cont-label {
+      background: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: .5rem .3rem;
+    }
+
+    .cont-label-text {
+      font-size: .72rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: .05em;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+
+    .cont-day {
+      min-height: 90px;
+      padding: .42rem .38rem .32rem;
+      cursor: pointer;
+      transition: background .1s;
+      background: #DCFCE7;
+    }
+
+    .cont-day:hover { background: #BBF7D0; }
+    .cont-day.has-events { background: #FFE4E8; }
+    .cont-day.has-events:hover { background: #FECDD3; }
+    .cont-day.tentative { background: #FEF9C3; }
+    .cont-day.tentative:hover { background: #FEF08A; }
+    .cont-day.out-range { background: #F5F5F5; cursor: default; }
+    .cont-day.out-range .cont-num { color: #C8D4E0; }
+
+    .cont-day.is-today .cont-num {
+      background: var(--navy);
+      color: white !important;
+      border-radius: 50%;
+    }
+
+    .cont-month-marker {
+      display: block;
+      font-size: .55rem;
+      font-weight: 800;
+      color: var(--red);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: .15rem;
+    }
+
+    .cont-num {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .2rem;
+    }
 
     /* ── Overview grid ── */
     .overview-grid {
@@ -280,11 +372,14 @@
     }
 
     .mini-day:nth-child(7n) { border-right: none; }
-    .mini-day:hover:not(.other-month) { background: #F8FAFC; }
+    .mini-day:not(.other-month) { background: #DCFCE7; }
+    .mini-day:not(.other-month):hover { background: #BBF7D0; }
+    .mini-day.has-events { background: #FFE4E8; }
+    .mini-day.has-events:hover { background: #FECDD3; }
+    .mini-day.tentative { background: #FEF9C3; }
+    .mini-day.tentative:hover { background: #FEF08A; }
     .mini-day.other-month { background: #FAFAFA; cursor: default; }
     .mini-day.other-month .mini-num { color: #CBD5E1; }
-    .mini-day.free-weekend { background: var(--free-bg); }
-    .mini-day.free-weekend:hover { background: #DCFCE7; }
 
     .mini-day.is-today .mini-num {
       background: var(--navy);
@@ -369,6 +464,38 @@
       z-index: 200;
       padding: 1rem;
       backdrop-filter: blur(2px);
+    }
+
+    /* ── Zoom toolbar ── */
+    .zoom-bar {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .6rem 1rem;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 54px;
+      z-index: 40;
+    }
+
+    .zoom-bar label {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .zoom-slider {
+      flex: 1;
+      max-width: 220px;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+
+    .zoom-hint {
+      font-size: .68rem;
+      color: var(--muted);
     }
 
     .overlay.hidden { display: none; }
@@ -552,6 +679,13 @@
   </div>
 </header>
 
+<!-- ── Zoom bar (scroll view only) ── -->
+<div class="zoom-bar" id="zoomBar" style="display:none">
+  <label>🔍 Zoom</label>
+  <input type="range" class="zoom-slider" id="zoomSlider" min="28" max="120" value="90" oninput="applyZoom(this.value)">
+  <span class="zoom-hint" id="zoomHint">Normal</span>
+</div>
+
 <!-- ── Scroll View (all months stacked) ── -->
 <div id="scrollView" class="view-wrap"></div>
 
@@ -587,6 +721,19 @@
       <div>
         <label class="form-label">End</label>
         <input type="date" class="form-input" id="evEnd" min="2026-05-01" max="2026-09-30">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Availability</label>
+      <div style="display:flex;gap:.5rem;">
+        <button id="statusBooked" type="button" onclick="selectStatus('booked')"
+          style="flex:1;padding:.5rem;border-radius:9px;border:2px solid #FECDD3;background:#FFE4E8;font-size:.8rem;font-weight:700;color:#9F1239;cursor:pointer;">
+          🔴 Confirmed
+        </button>
+        <button id="statusTentative" type="button" onclick="selectStatus('tentative')"
+          style="flex:1;padding:.5rem;border-radius:9px;border:2px solid var(--border);background:white;font-size:.8rem;font-weight:700;color:var(--muted);cursor:pointer;">
+          🟡 Tentative
+        </button>
       </div>
     </div>
     <div class="form-group">
@@ -656,7 +803,9 @@ const LEGEND_HTML = `
     <div class="legend-item"><div class="legend-chip" style="background:#FBCFE8"></div>Family</div>
     <div class="legend-item"><div class="legend-chip" style="background:#A7F3D0"></div>Holiday</div>
     <div class="legend-item"><div class="legend-chip" style="background:#E2E8F0"></div>Other</div>
-    <div class="legend-item"><div class="legend-chip free"></div>Free Weekend</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#DCFCE7;border:1px solid #86EFAC;"></div>Available</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#FFE4E8;border:1px solid #FECDD3;"></div>Confirmed</div>
+    <div class="legend-item"><div class="legend-chip" style="background:#FEF9C3;border:1px solid #FDE047;"></div>Tentative</div>
   </div>`;
 
 // ── Build a full-size month grid ──────────────────────────
@@ -681,7 +830,8 @@ function buildFullMonth(m) {
     else if (isSun&&d>1)        freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d-1)).length===0;
     else if (isSun&&d===1)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m-1,daysInMonth(y,m-1))).length===0;
 
-    const cls=['cal-day',isToday?'is-today':'',freeWknd?'free-weekend':''].filter(Boolean).join(' ');
+    const dayColor = evs.length===0 ? '' : evs.some(e=>!e.status||e.status==='booked') ? 'has-events' : 'tentative';
+    const cls=['cal-day',isToday?'is-today':'',dayColor].filter(Boolean).join(' ');
     let pills='';
     evs.slice(0,2).forEach(ev=>{
       const t=TYPES[ev.type]||TYPES.other;
@@ -732,7 +882,8 @@ function buildMiniMonth(m) {
     else if (isSun&&d>1)        freeWknd=evs.length===0&&eventsOnDay(ds(y,m,d-1)).length===0;
     else if (isSun&&d===1)      freeWknd=evs.length===0&&eventsOnDay(ds(y,m-1,daysInMonth(y,m-1))).length===0;
 
-    const cls=['mini-day',isToday?'is-today':'',freeWknd?'free-weekend':''].filter(Boolean).join(' ');
+    const dayColor = evs.length===0 ? '' : evs.some(e=>!e.status||e.status==='booked') ? 'has-events' : 'tentative';
+    const cls=['mini-day',isToday?'is-today':'',dayColor].filter(Boolean).join(' ');
     const dots=evs.slice(0,3).map(ev=>{
       const t=TYPES[ev.type]||TYPES.other;
       return `<div class="ev-dot" style="background:${t.color}" onclick="openModal('${ev.id}');event.stopPropagation();"></div>`;
@@ -758,12 +909,114 @@ function buildMiniMonth(m) {
 
 // ── Render views ─────────────────────────────────────────
 function renderScroll() {
-  document.getElementById('scrollView').innerHTML =
-    SUMMER.map(m => `
-      <div class="scroll-month">
-        <div class="month-heading">${MONTH_NAMES[m]} <span>${YEAR}</span></div>
-        ${buildFullMonth(m)}
-      </div>`).join('');
+  const today = todayStr();
+
+  // Build continuous weeks: first Sunday on/before May 1 → last Saturday on/after Sep 30
+  const firstDay = new Date(YEAR, 4, 1);
+  firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+  const lastDay = new Date(YEAR, 8, 30);
+  lastDay.setDate(lastDay.getDate() + (6 - lastDay.getDay()));
+
+  const weeks = [];
+  for (let d = new Date(firstDay); d <= lastDay; ) {
+    const week = [];
+    for (let i = 0; i < 7; i++) { week.push(new Date(d)); d.setDate(d.getDate() + 1); }
+    weeks.push(week);
+  }
+
+  // Determine which grid row each month label starts on (header = row 1, weeks start at row 2)
+  const monthLabeled = new Set();
+  const monthStartRow = {}; // month index → grid row number
+
+  weeks.forEach((week, wi) => {
+    const gridRow = wi + 2;
+    let label = null;
+
+    // First summer week triggers May label
+    if (!monthLabeled.has(4) && week.some(d => d.getMonth() === 4)) label = 4;
+
+    // New month starts when the 1st falls in this week
+    for (const day of week) {
+      if (day.getDate() === 1 && SUMMER.includes(day.getMonth()) && !monthLabeled.has(day.getMonth())) {
+        label = day.getMonth();
+        break;
+      }
+    }
+
+    if (label !== null && !monthLabeled.has(label)) {
+      monthLabeled.add(label);
+      monthStartRow[label] = gridRow;
+    }
+  });
+
+  // Calculate row spans: each month spans until the next month's start row (or end)
+  const totalRows = weeks.length + 1;
+  const sortedMonths = Object.keys(monthStartRow).map(Number).sort((a, b) => a - b);
+  const monthSpans = {};
+  sortedMonths.forEach((m, i) => {
+    const start = monthStartRow[m];
+    const end = i + 1 < sortedMonths.length ? monthStartRow[sortedMonths[i + 1]] : totalRows + 1;
+    monthSpans[m] = { start, span: end - start };
+  });
+
+  // ── Build flat grid HTML ─────────────────────────────
+  let html = '<div class="cont-grid">';
+
+  // Header row (row 1)
+  html += `<div class="cont-hdr-spacer" style="grid-column:1;grid-row:1;"></div>`;
+  DOW_LABELS.forEach((d, i) => {
+    html += `<div class="cont-dow ${i===0||i===6?'is-weekend':''}" style="grid-column:${i+2};grid-row:1;">${d}</div>`;
+  });
+
+  // Month label cells (spanning multiple rows)
+  sortedMonths.forEach(m => {
+    const { start, span } = monthSpans[m];
+    html += `<div class="cont-label" style="grid-column:1;grid-row:${start}/span ${span};">
+      <span class="cont-label-text">${MONTH_NAMES[m]}</span>
+    </div>`;
+  });
+
+  // Day cells — explicitly placed, no first-column cell needed
+  weeks.forEach((week, wi) => {
+    const gridRow = wi + 2;
+    week.forEach((day, di) => {
+      const gridCol = di + 2; // columns 2–8
+      const str = ds(day.getFullYear(), day.getMonth(), day.getDate());
+      const inRange = SUMMER.includes(day.getMonth());
+
+      if (!inRange) {
+        html += `<div class="cont-day out-range" style="grid-column:${gridCol};grid-row:${gridRow};">
+          <div class="cont-num">${day.getDate()}</div>
+        </div>`;
+        return;
+      }
+
+      const evs = eventsOnDay(str);
+      const isToday = str === today;
+      const showMark = day.getDate() === 1;
+      const dayColor = evs.length===0 ? '' : evs.some(e=>!e.status||e.status==='booked') ? 'has-events' : 'tentative';
+      const cls = ['cont-day', isToday ? 'is-today' : '', dayColor].filter(Boolean).join(' ');
+
+      let pills = '';
+      evs.slice(0, 2).forEach(ev => {
+        const t = TYPES[ev.type] || TYPES.other;
+        const sl = ev.start === str, el = ev.end === str;
+        const cc = !sl && !el ? 'cont-lr' : !sl ? 'cont-l' : !el ? 'cont-r' : '';
+        pills += `<span class="event-pill ${cc}" style="background:${t.bg};color:${t.text};border-left:2px solid ${t.color};"
+          onclick="openModal('${ev.id}');event.stopPropagation();">${sl ? ev.title : ''}</span>`;
+      });
+      if (evs.length > 2) pills += `<span class="more-count">+${evs.length - 2}</span>`;
+
+      html += `<div class="${cls}" style="grid-column:${gridCol};grid-row:${gridRow};" onclick="openModal(null,'${str}')">
+        ${showMark ? `<div class="cont-month-marker">${MONTH_NAMES[day.getMonth()].slice(0,3)}</div>` : ''}
+        <div class="cont-num">${day.getDate()}</div>
+        ${pills}
+      </div>`;
+    });
+  });
+
+  html += '</div>';
+  document.getElementById('scrollView').innerHTML = `<div class="cont-wrap">${html}${LEGEND_HTML}</div>`;
 }
 
 function renderOverview() {
@@ -838,6 +1091,18 @@ function calcFreeWeekends() {
   return out;
 }
 
+// ── Zoom ──────────────────────────────────────────────────
+function applyZoom(val) {
+  const v = parseInt(val);
+  document.querySelectorAll('.cont-day').forEach(el => { el.style.minHeight = v + 'px'; });
+  const showPills = v >= 55;
+  document.querySelectorAll('.cont-day .event-pill, .cont-day .more-count').forEach(el => {
+    el.style.display = showPills ? '' : 'none';
+  });
+  const hints = ['Compact','Compact','Normal','Comfortable','Expanded'];
+  document.getElementById('zoomHint').textContent = hints[Math.min(4, Math.floor((v - 28) / 20))];
+}
+
 // ── View switching ────────────────────────────────────────
 function setView(v) {
   view=v;
@@ -845,7 +1110,8 @@ function setView(v) {
     document.getElementById('btn'+k.charAt(0).toUpperCase()+k.slice(1)).classList.toggle('active',k===v);
     document.getElementById(k+'View').style.display=k===v?'block':'none';
   });
-  if (v==='scroll')   renderScroll();
+  document.getElementById('zoomBar').style.display = v==='scroll' ? 'flex' : 'none';
+  if (v==='scroll')   { renderScroll(); applyZoom(document.getElementById('zoomSlider').value); }
   if (v==='overview') renderOverview();
   if (v==='summary')  renderSummary();
 }
@@ -857,6 +1123,30 @@ function buildTypeGrid(sel) {
     <button class="type-chip ${selectedType===k?'selected':''}" id="tc-${k}"
       style="${selectedType===k?`background:${t.bg};color:${t.text};border-color:${t.color};`:''}"
       onclick="selectType('${k}')">${t.emoji}<br>${t.label}</button>`).join('');
+}
+
+// ── Status (booked / tentative) ───────────────────────────
+let selectedStatus = 'booked';
+
+function selectStatus(s) {
+  selectedStatus = s;
+  const booked    = document.getElementById('statusBooked');
+  const tentative = document.getElementById('statusTentative');
+  if (s === 'booked') {
+    booked.style.border    = '2px solid #FECDD3';
+    booked.style.background = '#FFE4E8';
+    booked.style.color      = '#9F1239';
+    tentative.style.border    = '2px solid var(--border)';
+    tentative.style.background = 'white';
+    tentative.style.color      = 'var(--muted)';
+  } else {
+    tentative.style.border    = '2px solid #FDE047';
+    tentative.style.background = '#FEF9C3';
+    tentative.style.color      = '#854D0E';
+    booked.style.border    = '2px solid var(--border)';
+    booked.style.background = 'white';
+    booked.style.color      = 'var(--muted)';
+  }
 }
 
 function selectType(k) {
@@ -881,14 +1171,14 @@ function openModal(id=null,date=null) {
     document.getElementById('evStart').value=ev.start;
     document.getElementById('evEnd').value=ev.end;
     document.getElementById('evNotes').value=ev.notes||'';
-    buildTypeGrid(ev.type); btnDel.style.display='block';
+    buildTypeGrid(ev.type); selectStatus(ev.status||'booked'); btnDel.style.display='block';
   } else {
     document.getElementById('modalTitle').textContent='Add Event';
     document.getElementById('evTitle').value='';
     document.getElementById('evStart').value=date||'';
     document.getElementById('evEnd').value=date||'';
     document.getElementById('evNotes').value='';
-    buildTypeGrid('travel'); btnDel.style.display='none';
+    buildTypeGrid('travel'); selectStatus('booked'); btnDel.style.display='none';
   }
   document.getElementById('overlay').classList.remove('hidden');
   setTimeout(()=>document.getElementById('evTitle').focus(),60);
@@ -905,8 +1195,8 @@ function saveEvent() {
   if (!title)      { alert('Please enter a title.'); return; }
   if (!start||!end){ alert('Please select dates.'); return; }
   if (start>end)   { alert('End must be on or after start.'); return; }
-  if (editingId) events=events.map(e=>e.id===editingId?{...e,title,type:selectedType,start,end,notes}:e);
-  else events.push({id:uid(),title,type:selectedType,start,end,notes});
+  if (editingId) events=events.map(e=>e.id===editingId?{...e,title,type:selectedType,status:selectedStatus,start,end,notes}:e);
+  else events.push({id:uid(),title,type:selectedType,status:selectedStatus,start,end,notes});
   persist(); closeModal(); refresh();
 }
 
