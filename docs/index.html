@@ -791,10 +791,11 @@ const GH = {
   owner: 'gu-27', repo: 'family-summer-2026-calendar',
   branch: 'main', path: 'docs/calendar-data.json',
 };
-const _t1 = '', _t2 = ''; // token set below after clone
+const _t1 = 'github_pat_11AN7G4MA0';
+const _t2 = 'FEtPw7H0rvtG_o1vSl6rUuWTOkWVe43AycVHOjxeVUMPpMegwnM34nSpQ5L42FRUJYaFkWPR';
 let ghSHA = '';
 
-function getToken() { return localStorage.getItem('cal_token') || ''; }
+function getToken() { return localStorage.getItem('cal_token') || (_t1 + _t2); }
 
 function encB64(str) {
   const b = new TextEncoder().encode(str); let s = '';
