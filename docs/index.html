@@ -1115,8 +1115,13 @@ function renderScroll() {
         const t = TYPES[ev.type] || TYPES.other;
         const sl = ev.start === str, el = ev.end === str;
         const cc = !sl && !el ? 'cont-lr' : !sl ? 'cont-l' : !el ? 'cont-r' : '';
+        // Show title on start day or middle day of multi-day events
+        const startMs = parseDs(ev.start).getTime(), endMs = parseDs(ev.end).getTime();
+        const midDate = new Date(Math.round((startMs + endMs) / 2));
+        const midStr = ds(midDate.getFullYear(), midDate.getMonth(), midDate.getDate());
+        const showTitle = sl || str === midStr;
         pills += `<span class="event-pill ${cc}" style="background:${t.bg};color:${t.text};border-left:2px solid ${t.color};"
-          onclick="openModal('${ev.id}');event.stopPropagation();">${sl ? ev.title : ''}</span>`;
+          onclick="openModal('${ev.id}');event.stopPropagation();">${showTitle ? ev.title : ''}</span>`;
       });
       if (evs.length > 2) pills += `<span class="more-count">+${evs.length - 2}</span>`;
 
@@ -1208,9 +1213,8 @@ function calcFreeWeekends() {
 function applyZoom(val) {
   const v = parseInt(val);
   document.querySelectorAll('.cont-day').forEach(el => { el.style.minHeight = v + 'px'; });
-  const showPills = v >= 55;
   document.querySelectorAll('.cont-day .event-pill, .cont-day .more-count').forEach(el => {
-    el.style.display = showPills ? '' : 'none';
+    el.style.display = '';
   });
   const hints = ['Compact','Compact','Normal','Comfortable','Expanded'];
   document.getElementById('zoomHint').textContent = hints[Math.min(4, Math.floor((v - 28) / 20))];
