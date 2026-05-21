@@ -61,5 +61,14 @@
     "start": "2026-06-27",
     "end": "2026-06-27",
     "notes": ""
+  },
+  {
+    "id": "ev-1779391212569-7cnrs",
+    "title": "July 4",
+    "type": "holiday",
+    "status": "booked",
+    "start": "2026-07-04",
+    "end": "2026-07-04",
+    "notes": ""
   }
 ]
