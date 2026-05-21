@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "ev-1779387900070-v113r",
+    "title": "test",
+    "type": "travel",
+    "status": "booked",
+    "start": "2026-05-22",
+    "end": "2026-05-22",
+    "notes": ""
+  }
+]
