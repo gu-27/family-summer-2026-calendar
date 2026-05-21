@@ -1115,11 +1115,7 @@ function renderScroll() {
         const t = TYPES[ev.type] || TYPES.other;
         const sl = ev.start === str, el = ev.end === str;
         const cc = !sl && !el ? 'cont-lr' : !sl ? 'cont-l' : !el ? 'cont-r' : '';
-        // Show title on start day or middle day of multi-day events
-        const startMs = parseDs(ev.start).getTime(), endMs = parseDs(ev.end).getTime();
-        const midDate = new Date(Math.round((startMs + endMs) / 2));
-        const midStr = ds(midDate.getFullYear(), midDate.getMonth(), midDate.getDate());
-        const showTitle = sl || str === midStr;
+        const showTitle = true;
         pills += `<span class="event-pill ${cc}" style="background:${t.bg};color:${t.text};border-left:2px solid ${t.color};"
           onclick="openModal('${ev.id}');event.stopPropagation();">${showTitle ? ev.title : ''}</span>`;
       });
