@@ -860,6 +860,7 @@ let events = load();
 let view = 'scroll';
 let editingId = null;
 let selectedType = 'travel';
+let initDone = false; // guard: don't auto-sync until GitHub load completes
 
 function load() {
   try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
@@ -869,8 +870,8 @@ function load() {
 function persist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
   setSyncDot(false);
-  // Auto-sync on every save
-  if (getToken()) syncToGitHub();
+  // Auto-sync on every save (but not during startup before GitHub load completes)
+  if (initDone && getToken()) syncToGitHub();
 }
 
 // ── Date helpers ─────────────────────────────────────────
@@ -1327,13 +1328,17 @@ setView('scroll'); // render immediately from localStorage
   // Update from GitHub in the background
   const ghData = await ghLoad().catch(() => null);
   if (ghData && Array.isArray(ghData)) {
-    events = ghData;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+    // Prefer GitHub data if it has events, or if local is empty
+    if (ghData.length > 0 || events.length === 0) {
+      events = ghData;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+      refresh();
+    }
     setSyncDot(true);
-    refresh();
   } else {
     setSyncDot(false);
   }
+  initDone = true; // unlock auto-sync now that we've loaded from GitHub
 })();
 </script>
 </body>
