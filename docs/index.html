@@ -821,6 +821,7 @@ async function ghLoad() {
 async function syncToGitHub() {
   const token = getToken();
   if (!token) { showToast('No token — add one in browser console: localStorage.setItem(\'cal_token\',\'YOUR_TOKEN\')'); return; }
+  if (!initDone) { showToast('Still loading — try again in a moment'); return; }
   const btn = document.getElementById('sync-btn');
   btn.classList.add('syncing');
   try {
