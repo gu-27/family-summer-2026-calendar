@@ -79,5 +79,14 @@
     "start": "2026-08-02",
     "end": "2026-08-02",
     "notes": ""
+  },
+  {
+    "id": "ev-1779391242345-mfz1y",
+    "title": "School",
+    "type": "commitment",
+    "status": "booked",
+    "start": "2026-08-24",
+    "end": "2026-08-24",
+    "notes": ""
   }
 ]
