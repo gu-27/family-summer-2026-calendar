@@ -287,6 +287,8 @@
     .cont-day.tentative:hover { background: #FEF08A; }
     .cont-day.out-range { background: #F5F5F5; cursor: default; }
     .cont-day.out-range .cont-num { color: #C8D4E0; }
+    .cont-day.is-past { background: #F1F5F9; }
+    .cont-day.is-past .cont-num { color: #CBD5E1; }
 
     .cont-day.is-today .cont-num {
       background: var(--navy);
@@ -738,7 +740,7 @@
     <div class="form-group form-row">
       <div>
         <label class="form-label">Start</label>
-        <input type="date" class="form-input" id="evStart" min="2026-05-01" max="2026-09-30">
+        <input type="date" class="form-input" id="evStart" min="2026-05-01" max="2026-09-30" onchange="onStartChange()">
       </div>
       <div>
         <label class="form-label">End</label>
@@ -1087,9 +1089,10 @@ function renderScroll() {
 
       const evs = eventsOnDay(str);
       const isToday = str === today;
+      const isPast  = str < today;
       const showMark = day.getDate() === 1;
       const dayColor = evs.length===0 ? '' : evs.some(e=>!e.status||e.status==='booked') ? 'has-events' : 'tentative';
-      const cls = ['cont-day', isToday ? 'is-today' : '', dayColor].filter(Boolean).join(' ');
+      const cls = ['cont-day', isToday ? 'is-today' : '', dayColor, isPast && evs.length===0 ? 'is-past' : ''].filter(Boolean).join(' ');
 
       let pills = '';
       evs.slice(0, 2).forEach(ev => {
@@ -1278,6 +1281,15 @@ function openModal(id=null,date=null) {
   setTimeout(()=>document.getElementById('evTitle').focus(),60);
 }
 
+function onStartChange() {
+  const start = document.getElementById('evStart').value;
+  const endEl = document.getElementById('evEnd');
+  endEl.min = start;
+  if (!endEl.value || endEl.value < start) endEl.value = start;
+  // Focus end date so user can adjust if multi-day
+  endEl.focus();
+}
+
 function closeModal() { document.getElementById('overlay').classList.add('hidden'); editingId=null; }
 function overlayClick(e) { if (e.target===document.getElementById('overlay')) closeModal(); }
 
@@ -1301,7 +1313,7 @@ function deleteEvent() {
 }
 
 function refresh() {
-  if (view==='scroll')   renderScroll();
+  if (view==='scroll')   { renderScroll(); applyZoom(document.getElementById('zoomSlider').value); }
   if (view==='overview') renderOverview();
   if (view==='summary')  renderSummary();
 }
