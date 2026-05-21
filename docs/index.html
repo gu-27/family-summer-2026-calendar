@@ -38,6 +38,24 @@
       z-index: 50;
       box-shadow: 0 2px 12px rgba(0,0,0,.25);
     }
+    .sync-btn {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+      color: #fff; border-radius: 8px; padding: .35rem .75rem;
+      font-size: .78rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: .35rem; transition: background .2s;
+    }
+    .sync-btn:hover { background: rgba(255,255,255,.22); }
+    .sync-btn.syncing .sync-icon { display: inline-block; animation: spin .7s linear infinite; }
+    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: inline-block; }
+    .sync-dot.stale { background: #fbbf24; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .toast {
+      position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+      background: #0F172A; color: #fff; padding: .55rem 1.25rem;
+      border-radius: 99px; font-size: .82rem; z-index: 1000;
+      opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
 
     .header-brand {
       display: flex;
@@ -676,8 +694,12 @@
     <button class="view-btn active" id="btnScroll"   onclick="setView('scroll')">📅 Scroll</button>
     <button class="view-btn"        id="btnOverview" onclick="setView('overview')">🗓 Overview</button>
     <button class="view-btn"        id="btnSummary"  onclick="setView('summary')">📋 Summary</button>
+    <button class="sync-btn" id="sync-btn" onclick="syncToGitHub()">
+      <span class="sync-icon">↑</span> Sync <span class="sync-dot stale" id="sync-dot"></span>
+    </button>
   </div>
 </header>
+<div class="toast" id="toast"></div>
 
 <!-- ── Zoom bar (scroll view only) ── -->
 <div class="zoom-bar" id="zoomBar" style="display:none">
@@ -764,8 +786,74 @@ const TYPES = {
   other:      { label:'Other',        emoji:'📎',  color:'#94A3B8', bg:'#F8FAFC', text:'#475569' },
 };
 
+// ── GitHub Sync ──────────────────────────────────────────
+const GH = {
+  owner: 'gu-27', repo: 'family-summer-2026-calendar',
+  branch: 'main', path: 'docs/calendar-data.json',
+};
+const _t1 = '', _t2 = ''; // token set below after clone
+let ghSHA = '';
+
+function getToken() { return localStorage.getItem('cal_token') || ''; }
+
+function encB64(str) {
+  const b = new TextEncoder().encode(str); let s = '';
+  b.forEach(x => s += String.fromCharCode(x)); return btoa(s);
+}
+function decB64(b64) {
+  const b = atob(b64); const a = Uint8Array.from(b, c => c.charCodeAt(0));
+  return new TextDecoder().decode(a);
+}
+
+async function ghLoad() {
+  const token = getToken(); if (!token) return null;
+  const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
+  const res = await fetch(url, { headers: { Authorization: `token ${token}`, 'Cache-Control': 'no-cache' } });
+  if (!res.ok) return null;
+  const data = await res.json();
+  ghSHA = data.sha;
+  return JSON.parse(decB64(data.content.replace(/\n/g, '')));
+}
+
+async function syncToGitHub() {
+  const token = getToken();
+  if (!token) { showToast('No token — add one in browser console: localStorage.setItem(\'cal_token\',\'YOUR_TOKEN\')'); return; }
+  const btn = document.getElementById('sync-btn');
+  btn.classList.add('syncing');
+  try {
+    // Fresh read for SHA
+    const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
+    const getRes = await fetch(url, { headers: { Authorization: `token ${token}` } });
+    if (getRes.ok) { const d = await getRes.json(); ghSHA = d.sha; }
+    const content = encB64(JSON.stringify(events, null, 2));
+    const putRes = await fetch(url, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update calendar-data.json', content, sha: ghSHA, branch: GH.branch })
+    });
+    if (!putRes.ok) { const e = await putRes.json().catch(() => ({})); throw new Error(e.message || putRes.status); }
+    const result = await putRes.json(); ghSHA = result.content.sha;
+    localStorage.setItem('cal_lastsync', new Date().toISOString());
+    setSyncDot(true); showToast('Synced ✓');
+  } catch(e) { showToast('Sync failed: ' + e.message); }
+  btn.classList.remove('syncing');
+}
+
+function setSyncDot(synced) {
+  const d = document.getElementById('sync-dot');
+  if (d) d.classList.toggle('stale', !synced);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
 // ── State ────────────────────────────────────────────────
-let events = load();
+let events = [];
 let view = 'scroll';
 let editingId = null;
 let selectedType = 'travel';
@@ -775,7 +863,12 @@ function load() {
   return [];
 }
 
-function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(events)); }
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+  setSyncDot(false);
+  // Auto-sync on every save
+  if (getToken()) syncToGitHub();
+}
 
 // ── Date helpers ─────────────────────────────────────────
 function ds(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
@@ -1215,7 +1308,19 @@ function refresh() {
 document.addEventListener('keydown',e=>{ if (e.key==='Escape') closeModal(); });
 
 // ── Init ──────────────────────────────────────────────────
-setView('scroll');
+(async () => {
+  // Try GitHub first, fallback to localStorage
+  const ghData = await ghLoad();
+  if (ghData && Array.isArray(ghData)) {
+    events = ghData;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+    setSyncDot(true);
+  } else {
+    events = load();
+    setSyncDot(false);
+  }
+  setView('scroll');
+})();
 </script>
 </body>
 </html>
