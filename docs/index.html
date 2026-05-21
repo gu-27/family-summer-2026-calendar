@@ -825,22 +825,23 @@ async function syncToGitHub() {
   const btn = document.getElementById('sync-btn');
   btn.classList.add('syncing');
   try {
-    // Fresh read for SHA (also checks what's on GitHub before overwriting)
+    // Always fetch GitHub first, then merge — never blindly overwrite
     const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
     const getRes = await fetch(url, { headers: { Authorization: `token ${token}` } });
     if (getRes.ok) {
       const d = await getRes.json();
       ghSHA = d.sha;
-      // Safety: never overwrite GitHub data with an empty list
+      // Merge: union of local + GitHub by id (local changes win for same id)
       const ghEvents = JSON.parse(decB64(d.content.replace(/\n/g, '')));
-      if (events.length === 0 && ghEvents.length > 0) {
-        events = ghEvents;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-        setSyncDot(true); showToast('Loaded from GitHub ✓');
-        btn.classList.remove('syncing');
-        refresh();
-        return;
+      const merged = [...ghEvents];
+      for (const ev of events) {
+        const idx = merged.findIndex(e => e.id === ev.id);
+        if (idx >= 0) merged[idx] = ev; // local wins on conflict
+        else merged.push(ev);           // new local event
       }
+      events = merged;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+      refresh();
     }
     const content = encB64(JSON.stringify(events, null, 2));
     const putRes = await fetch(url, {
