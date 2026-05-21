@@ -46,8 +46,8 @@
     }
     .sync-btn:hover { background: rgba(255,255,255,.22); }
     .sync-btn.syncing .sync-icon { display: inline-block; animation: spin .7s linear infinite; }
-    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: inline-block; }
-    .sync-dot.stale { background: #fbbf24; }
+    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: none; }
+    .sync-dot.stale { background: #fbbf24; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .toast {
       position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
@@ -825,10 +825,23 @@ async function syncToGitHub() {
   const btn = document.getElementById('sync-btn');
   btn.classList.add('syncing');
   try {
-    // Fresh read for SHA
+    // Fresh read for SHA (also checks what's on GitHub before overwriting)
     const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
     const getRes = await fetch(url, { headers: { Authorization: `token ${token}` } });
-    if (getRes.ok) { const d = await getRes.json(); ghSHA = d.sha; }
+    if (getRes.ok) {
+      const d = await getRes.json();
+      ghSHA = d.sha;
+      // Safety: never overwrite GitHub data with an empty list
+      const ghEvents = JSON.parse(decB64(d.content.replace(/\n/g, '')));
+      if (events.length === 0 && ghEvents.length > 0) {
+        events = ghEvents;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+        setSyncDot(true); showToast('Loaded from GitHub ✓');
+        btn.classList.remove('syncing');
+        refresh();
+        return;
+      }
+    }
     const content = encB64(JSON.stringify(events, null, 2));
     const putRes = await fetch(url, {
       method: 'PUT',
