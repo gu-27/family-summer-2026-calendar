@@ -856,7 +856,7 @@ function showToast(msg) {
 }
 
 // ── State ────────────────────────────────────────────────
-let events = [];
+let events = load();
 let view = 'scroll';
 let editingId = null;
 let selectedType = 'travel';
@@ -1321,18 +1321,19 @@ function refresh() {
 document.addEventListener('keydown',e=>{ if (e.key==='Escape') closeModal(); });
 
 // ── Init ──────────────────────────────────────────────────
+setView('scroll'); // render immediately from localStorage
+
 (async () => {
-  // Try GitHub first, fallback to localStorage
-  const ghData = await ghLoad();
+  // Update from GitHub in the background
+  const ghData = await ghLoad().catch(() => null);
   if (ghData && Array.isArray(ghData)) {
     events = ghData;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
     setSyncDot(true);
+    refresh();
   } else {
-    events = load();
     setSyncDot(false);
   }
-  setView('scroll');
 })();
 </script>
 </body>
