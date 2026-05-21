@@ -1105,7 +1105,7 @@ function renderScroll() {
 
       const evs = eventsOnDay(str);
       const isToday = str === today;
-      const isPast  = str < today;
+      const isPast  = str < today || str >= `${YEAR}-08-24`;
       const showMark = day.getDate() === 1;
       const dayColor = evs.length===0 ? '' : evs.some(e=>!e.status||e.status==='booked') ? 'has-events' : 'tentative';
       const cls = ['cont-day', isToday ? 'is-today' : '', dayColor, isPast && evs.length===0 ? 'is-past' : ''].filter(Boolean).join(' ');
