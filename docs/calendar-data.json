@@ -115,5 +115,14 @@
     "start": "2026-05-29",
     "end": "2026-05-31",
     "notes": ""
+  },
+  {
+    "id": "ev-1780988426439-ujbtu",
+    "title": "Asia",
+    "type": "travel",
+    "status": "booked",
+    "start": "2026-07-16",
+    "end": "2026-08-08",
+    "notes": ""
   }
 ]
